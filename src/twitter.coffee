@@ -5,6 +5,8 @@ HTTPS        = require 'https'
 EventEmitter = require('events').EventEmitter
 oauth        = require('oauth')
 
+json = ''
+
 class Twitter extends Adapter
 
  send: (user, strings...) ->
@@ -109,12 +111,17 @@ class TwitterStreaming extends EventEmitter
    request.end()
 
    parseResponse = (data,callback) ->
+     if data.indexOf('{"created_at"}') >= 0 || data.replace(/\r\n/, '').length == 0
+       json = ''
      while ((index = data.indexOf('\r\n')) > -1)
-       json = data.slice(0, index)
+       json += data.replace(/\r\n/, '')
        data = data.slice(index + 2)
+
+       console.log json
 
        if json.length > 0
           try
              callback JSON.parse(json), null
           catch err
              console.log err
+     json += data.replace(/\r\n/, '')
