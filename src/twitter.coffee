@@ -11,11 +11,8 @@ class Twitter extends Adapter
 
  send: (user, strings...) ->
    console.log "Sending strings to user: " + user.screen_name
-   strings.forEach (str) =>
-     text = str
-     tweetsText = str.split('\n')
-     tweetsText.forEach (tweetText) =>
-       @bot.send(user.user.user, tweetText, user.user.status_id )
+   strings.forEach (tweetText) =>
+     @bot.send(user.user.user, tweetText, user.user.status_id )
 
  reply: (user, strings...) ->
    console.log "Replying"
