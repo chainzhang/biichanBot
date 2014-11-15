@@ -18,6 +18,7 @@ module.exports = (robot) ->
     robot.router.post '/bii/befool/publish', (req, res) ->
         robot.logger.info "Befool blog updated"
         robot.emit "befool_homepage_published", {}
+        res.send 'OK, I would check it out. ^ ^'
 
     # on published
     robot.on "befool_homepage_published", (datas) ->
