@@ -48,8 +48,8 @@ module.exports = (robot) ->
                     robot.emit "tweet_new_posts_in_befool_blog", published_posts.reverse()
                     robot.brain.set 'befool:homepage:old:posts', JSON.stringify(posts)
                 else
-                    published_posts.reverse().each (post) ->
-                        rebot.logger.info "I would post :" + post.title
+                    $(published_posts.reverse()).each (i, post) ->
+                        robot.logger.info "I would post :" + post.title
             else
                 robot.logger.info "But there is not post updated."
 
