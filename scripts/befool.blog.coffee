@@ -3,8 +3,10 @@ jsdom = require 'jsdom'
 $ = require('jquery')(jsdom.jsdom().parentWindow)
 
 # global vars
-glob = this
+glob = {}
 glob.BEFOOL_HOMEPAGE_URL = 'http://befool.co.jp'
+glob.UPDATE_BRANCH       = 'public'
+glob.REPOS_NAME          = 'befool-inc/homepage'
 
 # tweets
 tweet_msg = (post) ->
@@ -16,6 +18,8 @@ tweet_msg = (post) ->
 module.exports = (robot) ->
     # listen to webhook
     robot.router.post '/bii/befool/publish', (req, res) ->
+        ref = req.body.ref
+        if ref.split('/').pop() isnt glob.UPDATE_BRANCH then return res.send 'OK, but I\'m not interested about that. ^ ^;'
         robot.logger.info "Befool blog updated"
         robot.emit "befool_homepage_published", {}
         res.send 'OK, I would check it out. ^ ^'
@@ -45,7 +49,7 @@ module.exports = (robot) ->
     robot.on "tweet_new_posts_in_befool_blog", (posts, msg) ->
         sent = []
         $(posts).each (i, post) ->
-            robot.send undefined, tweet_msg(post)
+            # robot.send undefined, tweet_msg(post)
             sent.push(post.title)
         robot.emit "befool_blog_tweeted", sent
 
