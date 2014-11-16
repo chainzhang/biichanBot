@@ -6,7 +6,9 @@ parseString = require('xml2js').parseString;
 template = {
     single: [':first かな!',
              ':first だよ',
-             ':first だと思うよ'],
+             ':first だと思うよ',
+             ':first だ！',
+             ':first て言うんだよ〜'],
     double: [':first か、:otherか、どっちかな'
              ':first と :other、どっちも使えるかしら..?'],
     multi:  [':first かな、:other ともいうらしいよ、どれがいいかな^ ^;',
