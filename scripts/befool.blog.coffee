@@ -49,5 +49,6 @@ module.exports = (robot) ->
             sent.push(post.title)
         robot.emit "befool_blog_tweeted", sent
 
+    # on tweeted
     robot.on "befool_blog_tweeted", (sent) ->
         robot.logger.info "post tweeted: \n" + sent.join("\n")
