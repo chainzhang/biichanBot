@@ -36,7 +36,7 @@ module.exports = (robot) ->
                 posts.push(post_link)
 
             if published_posts.length > 0
-                robot.emit "tweet_new_posts_in_befool_blog", published_posts
+                robot.emit "tweet_new_posts_in_befool_blog", published_posts.reverse()
                 robot.brain.set 'befool:homepage:old:posts', JSON.stringify(posts)
             else
                 robot.logger.info "But there is not post updated."
