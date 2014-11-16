@@ -9,9 +9,11 @@ glob.BEFOOL_HOMEPAGE_URL = 'http://befool.co.jp'
 # tweets
 tweet_msg = (post) ->
     # templates of the tweet, would be select in random
-    template = ['befoolのブログ更新したよ：:title :link',
-                'やった！新しいブログがアップされました：:title :link']
-    template[Math.floor(Math.random() * template.length)].replace(/:title/g, post.title).replace(/:link/g, post.link)
+    template = ['新しいブログ記事を読んでみな〜 :title :link  #befool',
+                'ブログ更新：:title :link #befool',
+                'befoolのブログ更新したよ：:title :link #befool',
+                'やった！新しい記事がアップされた!：:title :link #befool']
+    template[Math.floor(Math.random() * template.length)].replace(/:title/g, '『'+post.title+'』').replace(/:link/g, post.link)
 
 module.exports = (robot) ->
     # listen to webhook
