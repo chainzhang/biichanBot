@@ -21,7 +21,7 @@ module.exports = (robot) ->
     # listen to webhook
     robot.router.post '/bii/befool/publish', (req, res) ->
         ref = req.body.ref
-        repos = req.repository.full_name
+        repos = req.body.repository.full_name
         if ref.split('/').pop() isnt config.UPDATE_BRANCH 
             return res.send 'OK, but I\'m not interested about that. ^ ^;'
         robot.logger.info "Befool blog updated"
