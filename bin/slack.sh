@@ -54,4 +54,12 @@ case $2 in
         printf "[%-3s]   %s\n" "OK" "Bii is sleeping"
     fi
 ;;
+"update")
+    git pull origin slack
+    slack_stop
+    slack_start
+;;
+"log")
+    tail -f logs/hubot.slack.log
+;;
 esac
