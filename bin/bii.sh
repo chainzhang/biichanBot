@@ -1,5 +1,4 @@
-# bii slack status
-# 
+#!/bin/bash
 
 export bii_dir="$(dirname "$0")"
 export bot_name="bii"
@@ -9,7 +8,7 @@ case $1 in
 "slack")
     . "$bii_dir/slack.sh"
 ;;
+"twitter")
+    . "$bii_dir/twitter.sh"
+;;
 esac
-
-
-
