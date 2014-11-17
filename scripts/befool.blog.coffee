@@ -57,7 +57,7 @@ module.exports = (robot) ->
     robot.on "tweet_new_posts_in_befool_blog", (posts, msg) ->
         sent = []
         $(posts).each (i, post) ->
-            # robot.send undefined, tweet_msg(post)
+            robot.send undefined, tweet_msg(post)
             sent.push(post.title)
         robot.emit "befool_blog_tweeted", sent
 
