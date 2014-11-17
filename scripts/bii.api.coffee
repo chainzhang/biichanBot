@@ -1,6 +1,6 @@
 module.exports = (robot) ->
     robot.router.get '/bii/say', (req, res) ->
-         room     = req.query.room
+         channel  = req.query.channel
          text     = req.query.text
          username = req.query.username
          secret   = req.params.secret
@@ -8,5 +8,6 @@ module.exports = (robot) ->
          message = "#{text}"
          if username? then message = "@#{username} " + message
 
-         robot.messageRoom room, message
+         robot.logger.info "Say #{message} in ##{channel}"
+         robot.messageRoom '#'+channel, message
          res.send 'OK'

@@ -1,8 +1,8 @@
-###
 jsdom = require 'jsdom'
 $ = require('jquery')(jsdom.jsdom().parentWindow)
 
 module.exports = (robot) ->
+    return
     robot.respond /(.*)を?[や|対応]/i, (msg) ->
         mgr = new IssueManager(robot)
         user = msg.message.user || {'name':'demo'}
@@ -92,10 +92,8 @@ class IssueManager
         # console.log(ticket_num)
         if not @is_number(ticket_num) then return false
         return true
-
-
-
-    #get_issues = (user) ->
+###
+    get_issues = (user) ->
         #issue_pool = all_issues
         #user_issues = []
         #[]
