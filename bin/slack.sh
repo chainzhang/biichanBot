@@ -10,11 +10,11 @@ function slack_start {
         exit $?
     fi
 
-    export HUBOT_SLACK_TOKEN=""
-    export HUBOT_SLACK_TEAM=""
+    export HUBOT_SLACK_TOKEN="wMglSkQ6DeAoEbI6O26UFmIt"
+    export HUBOT_SLACK_TEAM="befool"
     export HUBOT_SLACK_BOTNAME="$bot_name"
-    export HUBOT_SLACK_CHANNELMODE=""
-    export HUBOT_SLACK_CHANNELS=""
+    export HUBOT_SLACK_CHANNELMODE="whitelist"
+    export HUBOT_SLACK_CHANNELS="random,general"
     export HUBOT_SLACK_LINK_NAMES=""
 
     PORT=$slack_port bin/hubot --adapter slack > logs/hubot.slack.log 2>&1 &
