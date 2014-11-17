@@ -25,7 +25,7 @@ function twitter_start {
 }
 
 function twitter_stop {
-    pkill -f bin/hubot --adapter slack
+    pkill -f "bin/hubot -a twitter -n bii_befool"
     if [ $? -eq 0 ]; then
         printf "[%-3s]   %s\n" "OK" "Bii Stopped."
     fi
