@@ -24,7 +24,7 @@ function slack_start {
 }
 
 function slack_stop {
-    pkill -f bin/hubot --adapter slack
+    pkill -f "bin/hubot --adapter slack"
     if [ $? -eq 0 ]; then
         printf "[%-3s]   %s\n" "OK" "Bii Stopped."
     fi
