@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export HUBOT_TWITTER_ACCOUNT_NAME="bii_befool"
 export twitter_port="7272"
 
