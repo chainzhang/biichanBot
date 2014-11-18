@@ -14,7 +14,7 @@ function slack_start {
     export HUBOT_SLACK_TEAM="befool"
     export HUBOT_SLACK_BOTNAME="$bot_name"
     export HUBOT_SLACK_CHANNELMODE="whitelist"
-    export HUBOT_SLACK_CHANNELS="random,general"
+    export HUBOT_SLACK_CHANNELS="random,general,b3m"
     export HUBOT_SLACK_LINK_NAMES="1"
 
     PORT=$slack_port bin/hubot --adapter slack > logs/hubot.slack.log 2>&1 &
