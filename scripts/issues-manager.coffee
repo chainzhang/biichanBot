@@ -16,8 +16,9 @@ module.exports = (robot) ->
         if solved
             msg.reply "そのチケットは@#{solved.user}が#{solved.solved_time}に対応しました。"
             return
-        if mgr.is_assigned(ticket)
-            msg.reply "そのチケットは#{user.name}が対応してますよ。"
+        assigned = mgr.is_assigned(ticket)
+        if assigned
+            msg.reply "そのチケットは#{assigned.user}が対応してますよ。"
             return
 
         issue_obj = {
@@ -103,7 +104,7 @@ class IssueManager
 
     is_assigned: (issue) ->
         issue_pool = @all_issues()
-        if issue_pool[issue]? then return true
+        if issue_pool[issue]? then return issue_pool[issue]
         return false
 
     is_solved: (ticket) ->
