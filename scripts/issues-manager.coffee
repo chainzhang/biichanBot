@@ -71,10 +71,26 @@ module.exports = (robot) ->
             return
         msg.reply "今対応中のチケットは：\n" + my_tickets.sort().join("\n")
 
+    robot.respond /(.*)の(チケット|tickets?)を?(クリア|clear|完了)/i, (msg) ->
+        mgr = new IssueManager(robot)
+        user = msg.message.user || {'name':'demo'}
+        tag = msg.match[1].replace('の', '').toLowerCase()
+        all_issues = mgr.all_issues()
+        count = 0
+        for k, v of all_issues
+            if tag is v.tag.toLowerCase()
+                if v.user is user.name
+                    mgr.solve_issue(k)
+                    count++
+        if count is 0
+            msg.reply "今対応中のチケットはありませんよ"
+            return
+        msg.reply "お疲れ様でした〜"
+
+
     robot.respond /みんなの(.*)の?(チケット|ticket)を?(みせて|見せて|みたい|見たい)/i, (msg) ->
         mgr = new IssueManager(robot)
         tag = msg.match[1].replace('の', '').toLowerCase()
-        console.log(tag)
         for k, v of mgr.get_tags()
             if tag is v.toLowerCase()
                 the_tag = tag
