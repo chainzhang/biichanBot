@@ -1,6 +1,13 @@
 jsdom = require 'jsdom'
 $ = require('jquery')(jsdom.jsdom().parentWindow)
 
+fixed_size = (str, size) ->
+    remaind = size - str.length
+    if remaind > 0
+        while remaind -= 1
+            str += " "
+        str
+
 module.exports = (robot) ->
     robot.respond /(.*)を?(やる|やります|対応中?)/i, (msg) ->
         mgr = new IssueManager(robot)
@@ -23,7 +30,8 @@ module.exports = (robot) ->
 
         issue_obj = {
             'user' : user.name,
-            'issue': ticket
+            'issue': ticket,
+            'tag'  : tag
         }
         mgr.assign_issue_to(issue_obj, user)
         msg.reply "はい、#{tag}のチケットですね、頑張って下さい！"
@@ -57,26 +65,61 @@ module.exports = (robot) ->
         my_tickets = []
         username = msg.message.user.name
         for k, v of result
-            if v.user is username then my_tickets.push(v.issue)
+            if v.user is username then my_tickets.push(fixed_size(v.tag, 12) + v.issue)
         if my_tickets.length is 0
             msg.reply "今対応中のチケットはありませんよ"
             return
-        msg.reply "今対応中のチケットは：\n" + my_tickets.join("\n")
+        msg.reply "今対応中のチケットは：\n" + my_tickets.sort().join("\n")
 
+    robot.respond /みんなの(.*)の?(チケット|ticket)を?(みせて|見せて|みたい|見たい)/i, (msg) ->
+        mgr = new IssueManager(robot)
+        tag = msg.match[1].replace('の', '').toLowerCase()
+        console.log(tag)
+        for k, v of mgr.get_tags()
+            if tag is v.toLowerCase()
+                the_tag = tag
+                tag_title = v
+                break;
+            return
+        result = {}
+        count = 0
+        for k, v of mgr.all_issues()
+            if v.tag.toLowerCase() is the_tag
+                if not result[v.user]? then result[v.user] = []
+                result[v.user].push(k)
+                count++
+
+        if count is 0
+            msg.reply "#{tag_title}のチケットをやってる人はまだいません〜"
+            return
+        print_out = "こんな感じです\n"
+        for u, issues of result
+            print_out += u + " さん\n"
+            print_out += "-------------------------\n"
+            print_out += i + "\n" for i in issues
+            print_out += "\n"
+
+        msg.reply print_out
 
 
 class IssueManager
     _robot : undefined
     _tags: {
-        'redm04.maql.co.jp'  : 'B3M'
+        'redm04.maql.co.jp'  : 'B3M',
+        'github.com\/befool-inc\/madcity' : 'madcity'
     }
 
     constructor: (robot) ->
         @_robot = robot
 
+    get_tags: ->
+        @_tags
+
     get_tag: (ticket) ->
-        domain = ticket.replace('http://','').replace('https://','').split(/[/?#]/)[0]
-        @_tags[domain] || null
+        for pattern, tag of @_tags
+            p = '/' + pattern + '/i'
+            if ticket.match(p) then return tag
+        null
 
     is_number: (obj) ->
         not $.isArray( obj ) && (obj - parseFloat( obj ) + 1) >= 0
