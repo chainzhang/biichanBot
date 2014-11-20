@@ -11,8 +11,8 @@ fixed_size = (str, size) ->
 module.exports = (robot) ->
     robot.router.post '/bii/hear/b3m_repos', (req, res) ->
         action = req.body.action || req.query.action
-        content = req.body.body || req.query.body
-        merged = req.body.merged || req.query.merged
+        content = req.body.pull_request.body || req.query.body
+        merged = req.body.pull_request.merged || req.query.merged
         if (not action?) or (action isnt "closed") or (not merged)
             return res.send 'OK, but I\'m not interested about that. ^ ^;'
         robot.logger.info "B3M pull request"
