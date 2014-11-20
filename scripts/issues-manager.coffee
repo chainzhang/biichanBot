@@ -10,14 +10,16 @@ fixed_size = (str, size) ->
 
 module.exports = (robot) ->
     robot.router.post '/bii/hear/b3m_repos', (req, res) ->
-        action = req.body.action || req.query.action
+        action = req.body.action
         if not req.body.pull_request? then return res.send 'OK, but I\'m not interested about that. ^ ^;'
-        content = (req.body.pull_request.title + "\n" + req.body.body) || req.query.body
-        merged = req.body.pull_request.merged || req.query.merged
+        content = req.body.pull_request.title + "\n" + req.body.pull_request.body
+        console.log(content)
+        merged = req.body.pull_request.merged
         if (not action?) or (action isnt "closed") or (not merged)
             return res.send 'OK, but I\'m not interested about that. ^ ^;'
         robot.logger.info "B3M pull request"
-        matched = content.match(/(https?:\/\/redm04\.maql\.co\.jp\/issues\/\d{6})/g)
+        matched = content.match(/(https?:\/\/redm04\.maql\.co\.jp\/issues\/\d{5})/g)
+        console.log(matched)
         if not matched
             return res.send 'OK, but I\'m not interested about that. ^ ^;'
         mgr = new IssueManager(robot)
