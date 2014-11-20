@@ -34,7 +34,7 @@ module.exports = (robot) ->
         mgr = new IssueManager(robot)
         all_solved = mgr.all_solved_issues()
         user = all_solved[data.solved[0]].user
-        robot.messageRoom '#B3M', '@' + user + ' ' + data.solved.join('、') + ' 関連のプルリクがマージされましたので、解決っていうことですね。'
+        robot.messageRoom '#B3M', '@' + user + ' ' + data.solved.join(' 、') + ' 関連のプルリクがマージされましたので、解決っていうことですね。'
 
 
     robot.respond /(.*)を?(やる|やります|対応中?)/i, (msg) ->
