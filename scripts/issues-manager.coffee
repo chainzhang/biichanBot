@@ -9,6 +9,33 @@ fixed_size = (str, size) ->
         str
 
 module.exports = (robot) ->
+    robot.router.post '/bii/hear/b3m_repos', (req, res) ->
+        action = req.body.action || req.query.action
+        content = req.body.body || req.query.body
+        merged = req.body.merged || req.query.merged
+        if (not action?) or (action isnt "closed") or (not merged)
+            return res.send 'OK, but I\'m not interested about that. ^ ^;'
+        robot.logger.info "B3M pull request"
+        matched = content.match(/(http:\/\/redm04\.maql\.co\.jp\/.*)/g)
+        if not matched
+            return res.send 'OK, but I\'m not interested about that. ^ ^;'
+        mgr = new IssueManager(robot)
+        count = 0
+        for ticket in matched
+            if mgr.is_assigned(ticket)
+                mgr.solve_issue(ticket)
+                count++
+        if count > 0 then robot.emit "b3m_pull_req_merged", {solved: matched}
+        res.send 'OK, I would check it out. ^ ^'
+
+    robot.on "b3m_pull_req_merged" , (data) ->
+        solved = []
+        mgr = new IssueManager(robot)
+        all_solved = mgr.all_solved_issues()
+        user = all_solved[data.solved[0]].user
+        robot.messageRoom '#B3M', '@' + user + ' ' + data.solved.join('、') + '関連のプルリクがマージされましたので、解決っていうことですね。'
+
+
     robot.respond /(.*)を?(やる|やります|対応中?)/i, (msg) ->
         mgr = new IssueManager(robot)
         user = msg.message.user || {'name':'demo'}
@@ -121,8 +148,8 @@ module.exports = (robot) ->
 class IssueManager
     _robot : undefined
     _tags: {
-        'redm04.maql.co.jp'  : 'B3M',
-        'github.com\/befool-inc\/madcity' : 'madcity'
+        'redm04\\.maql\\.co\\.jp'  : 'B3M',
+        'github\\.com\/befool-inc\/madcity' : 'madcity'
     }
 
     constructor: (robot) ->
@@ -133,7 +160,7 @@ class IssueManager
 
     get_tag: (ticket) ->
         for pattern, tag of @_tags
-            p = '/' + pattern + '/i'
+            p = RegExp('https?:\\/\\/' + pattern + '\\/.*', 'g')
             if ticket.match(p) then return tag
         null
 
@@ -175,6 +202,7 @@ class IssueManager
         issue_pool = @all_issues()
         solved_pool = @all_solved_issues()
         the_issue = issue_pool[issue]
+        if not the_issue? then return
         now = new Date
         year    = now.getFullYear()
         month   = now.getMonth()+1
