@@ -25,7 +25,9 @@ module.exports = (robot) ->
         if (not ref?) or (ref.split('/').pop() isnt config.UPDATE_BRANCH)
             return res.send 'OK, but I\'m not interested about that. ^ ^;'
         robot.logger.info "Befool blog updated"
-        robot.emit "befool_homepage_published", {repos: repos}
+        setTimeout () ->
+            robot.emit "befool_homepage_published", {repos: repos}
+        , 30 * 1000
         res.send 'OK, I would check it out. ^ ^'
 
     # on published
