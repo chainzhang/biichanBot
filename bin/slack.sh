@@ -13,8 +13,6 @@ function slack_start {
     export HUBOT_SLACK_TOKEN="xoxb-3292069201-7ZkLBMZWUAJ5168l0yEAsTfi"
     export HUBOT_SLACK_TEAM="befool"
     export HUBOT_SLACK_BOTNAME="$bot_name"
-    export HUBOT_SLACK_CHANNELMODE="whitelist"
-    export HUBOT_SLACK_CHANNELS="random,general,b3m,dmm_mad"
     export HUBOT_SLACK_LINK_NAMES="1"
     export REDIS_URL="redis://localhost:6379/bii:slack"
     # redis://<host>:<port>[/<brain_prefix>]
