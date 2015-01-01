@@ -3,6 +3,8 @@
 export bii_dir="$(dirname "$0")"
 export bot_name="bii"
 export slack_port="6464"
+export nowtime=$(date +"%Y_%m_%d")
+export log_file="logs/$nowtime.log"
 
 if [ -z $BII_BOT_DIR ]; then
     printf "[%-3s]   %s\n" "ERR" "You should define BII_BOT_DIR before use bii command."

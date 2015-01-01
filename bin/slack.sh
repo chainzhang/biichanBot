@@ -17,7 +17,8 @@ function slack_start {
     export REDIS_URL="redis://localhost:6379/bii:slack"
     # redis://<host>:<port>[/<brain_prefix>]
 
-    PORT=$slack_port bin/hubot --adapter slack > logs/hubot.slack.log 2>&1 &
+    printf "\n\n--------- bii start ---------\n" >> $log_file
+    PORT=$slack_port bin/hubot --adapter slack >> $log_file 2>&1 &
     if [ $? -eq 0 ]; then
         printf "[%-3s]   %s\n" "OK" "Bii now is running"
     fi
