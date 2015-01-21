@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+var sys = require('sys');
+var exec = require('child_process').exec;
+var bii_slack = "BII_BOT_DIR=~/apps/bots/bii_slack ~/apps/bots/bii_slack/bin/bii.sh slack";
+var watch = setInterval(function(){
+    exec(bii_slack + " status | grep running", function(err, stdout, stderr){
+        console.log(stdout);
+        if (! stdout) {
+            exec(bii_slack + " start", function(err, stdout, stderr){
+                console.log('restart bii chan');
+                console.log(stdout);
+            });
+        }
+    });
+},5000);

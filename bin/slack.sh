@@ -63,6 +63,6 @@ case $2 in
     slack_start
 ;;
 "log")
-    tail -f logs/hubot.slack.log
+    tail -f $log_file
 ;;
 esac
